@@ -1,0 +1,21 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: xxs - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x804 /fo"Release/xxs.res" /d "NDEBUG" "E:\linuixs\xxs.rc"" 
+Creating command line "link.exe /nologo /subsystem:windows /incremental:no /pdb:"Release/scq.pdb" /machine:I386 /out:"bin/scq.exe"  .\Release\StdAfx.obj .\Release\xxs.obj .\Release\xxsDlg.obj .\Release\xxs.res "
+<h3>Output Window</h3>
+Compiling resources...
+Linking...
+
+
+
+<h3>Results</h3>
+scq.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

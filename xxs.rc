@@ -1,0 +1,224 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (中国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\生成器.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.chs\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\生成器.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_MY_DIALOG DIALOGEX 0, 0, 665, 236
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "小学生挖矿程序qq：1509477745"
+FONT 9, "宋体"
+BEGIN
+    PUSHBUTTON      "生成linux（官方）",IDOK,80,140,88,25
+    PUSHBUTTON      "取消",IDCANCEL,595,140,45,25
+    LTEXT           "指令:",IDC_STATIC,14,47,51,10
+    EDITTEXT        IDC_SET_DIS,68,46,288,13,ES_AUTOHSCROLL
+    GROUPBOX        "活动公告",IDC_STATIC,7,170,651,56
+    EDITTEXT        IDC_EDIT2,14,182,637,39,ES_AUTOHSCROLL
+    LTEXT           "欢迎大家来我博客玩",IDC_STATIC,72,28,262,10
+    PUSHBUTTON      "更新生成器",IDC_BUTTON1,13,151,50,14,WS_DISABLED
+    PUSHBUTTON      "更新程序",IDC_xxs,15,14,50,14,WS_DISABLED
+    LTEXT           "当前生成器版本：",IDC_STATIC,397,16,65,8
+    LTEXT           "最新生成器版本：",IDC_STATIC,398,36,68,12
+    LTEXT           "云端更新日期：",IDC_STATIC,398,57,76,11
+    EDITTEXT        IDC_EDIT3,483,16,39,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT4,483,35,38,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT5,483,54,57,16,ES_AUTOHSCROLL
+    PUSHBUTTON      "生成win",IDOK2,301,140,45,25
+    PUSHBUTTON      "生成arm（1）",IDOK3,400,140,67,25,WS_DISABLED
+    LTEXT           "进程名:",IDC_STATIC,13,69,51,10
+    EDITTEXT        IDC_SET_DIS2,68,67,288,13,ES_AUTOHSCROLL
+    LTEXT           "win自动加上.exe",IDC_STATIC,361,65,38,20
+    PUSHBUTTON      "生成linux（兼容）",IDOK4,187,140,88,25
+    PUSHBUTTON      "生成arm（2）",IDOK5,489,140,67,25,WS_DISABLED
+    LTEXT           "linux(官方)：2.6.4内核，兼容性不错（基本全系统兼容）.\nlinux（兼容）：全系统兼容，内核版本2.6.0bate3. \narm（1）2.6.4最新内核,arm暂停使用.",
+                    IDC_STATIC,7,100,295,34
+    PUSHBUTTON      "开启离线模式",IDC_BUTTON2,592,81,56,27
+    PUSHBUTTON      "关闭离线模式",IDC_BUTTON3,592,112,56,27
+    CONTROL         "upx压缩",IDC_UPX,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    68,83,44,10
+    LTEXT           "linux最好不要压缩，可能段错误（不知道为啥）.",
+                    IDC_STATIC,123,85,188,8
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x29L
+#else
+ FILEFLAGS 0x28L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404b0"
+        BEGIN
+            VALUE "Comments", "千鸟阁论坛qq:1509477745\0"
+            VALUE "CompanyName", "千鸟阁论坛qq:1509477745\0"
+            VALUE "FileDescription", "千鸟阁论坛qq:1509477745\0"
+            VALUE "FileVersion", "千鸟阁论坛qq:1509477745\0"
+            VALUE "InternalName", "千鸟阁论坛qq:1509477745\0"
+            VALUE "LegalCopyright", "千鸟阁论坛qq:1509477745\0"
+            VALUE "LegalTrademarks", "千鸟阁论坛qq:1509477745\0"
+            VALUE "OriginalFilename", "千鸟阁论坛qq:1509477745\0"
+            VALUE "PrivateBuild", "千鸟阁论坛qq:1509477745\0"
+            VALUE "ProductName", "千鸟阁论坛qq:1509477745\0"
+            VALUE "ProductVersion", "千鸟阁论坛qq:1509477745\0"
+            VALUE "SpecialBuild", "千鸟阁论坛qq:1509477745\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_MY_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 658
+        VERTGUIDE, 68
+        VERTGUIDE, 226
+        VERTGUIDE, 282
+        VERTGUIDE, 399
+        VERTGUIDE, 484
+        VERTGUIDE, 592
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 229
+        HORZGUIDE, 22
+        HORZGUIDE, 41
+        HORZGUIDE, 62
+        HORZGUIDE, 94
+        HORZGUIDE, 112
+        HORZGUIDE, 165
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// 24
+//
+
+1                       24      DISCARDABLE     "res\\default1.bin"
+#endif    // Chinese (中国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE 4, 2
+#pragma code_page(936)
+#endif //_WIN32
+#include "res\生成器.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.chs\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

