@@ -3,7 +3,8 @@
 #include "xxs.h"
 #include "xxsdlg.h"
 #include "WINUSER.H"
-
+#include "SkinH.h"
+#pragma comment(lib, "SkinH.lib")
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -44,7 +45,7 @@ BOOL CMyApp::InitInstance()
 {
 	Deletecaching();//É¾³ý»º´æ¶®²»
 	AfxEnableControlContainer();
-
+	SkinH_AttachEx("xxs.she", NULL);
 	// Standard initialization
 	// If you are not using these features and wish to reduce the size
 	//  of your final executable, you should remove from the following

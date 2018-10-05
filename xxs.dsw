@@ -3,7 +3,19 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
-Project: "Éú³ÉÆ÷"=".\xxs.dsp" - Package Owner=<4>
+Project: "WK2017"=.\win\WK2017.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "xxs"=.\xxs.dsp - Package Owner=<4>
 
 Package=<5>
 {{{

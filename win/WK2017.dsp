@@ -43,7 +43,8 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MT /w /W0 /GX /O1 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MT /w /W0 /GX /O1 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /FR /FD /c
+# SUBTRACT CPP /YX /Yc /Yu
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x804 /d "NDEBUG" /d "_AFXDLL"
@@ -53,7 +54,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386 /out:"../bin/xxs.exe"
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib psapi.lib /nologo /subsystem:windows /machine:I386 /out:"../bin/xxs.exe"
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "WK2017 - Win32 Debug"
@@ -96,6 +97,10 @@ SOURCE=.\CPUusage.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\injection.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\MainFrm.cpp
 # End Source File
 # Begin Source File
@@ -126,6 +131,10 @@ SOURCE=.\WK2017View.cpp
 # Begin Source File
 
 SOURCE=.\CPUusage.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\injection.h
 # End Source File
 # Begin Source File
 
@@ -161,22 +170,6 @@ SOURCE=.\WK2017View.h
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # Begin Source File
 
-SOURCE=.\res\exe1.bin
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\exe2.bin
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\exe3.bin
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\Toolbar.bmp
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\WK2017.ico
 # End Source File
 # Begin Source File
@@ -192,37 +185,5 @@ SOURCE=.\res\WK2017.rc2
 SOURCE=.\res\WK2017Doc.ico
 # End Source File
 # End Group
-# Begin Source File
-
-SOURCE=.\Release\32.exe
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\NsCpuCNMiner32.exe
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\NsCpuCNMiner64.exe
-# End Source File
-# Begin Source File
-
-SOURCE=.\ReadMe.txt
-# End Source File
-# Begin Source File
-
-SOURCE=".\Release\xmrig-amd.exe"
-# End Source File
-# Begin Source File
-
-SOURCE=".\Release\xmrig-nvidia.exe"
-# End Source File
-# Begin Source File
-
-SOURCE=.\Release\xmrig.exe
-# End Source File
-# Begin Source File
-
-SOURCE=.\Release\xxs.exe
-# End Source File
 # End Target
 # End Project

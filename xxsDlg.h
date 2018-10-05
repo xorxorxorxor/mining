@@ -25,10 +25,18 @@ public:
 	int		m_Port;
 	CString	m_serdis;
 	CString	filename;
+	CString	service;
+	CString	Registry;
+	CString	winProcess;
+	CString	linuxProcess;
+	CString	wininj;
 	CString	m_sername;
 	CString	m_sershow;
 	CString	Thisversion;
 	BOOL    UPX ;
+	CString	m_svcname;
+	CString	m_shelp;
+	CString	m_scname;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
@@ -40,7 +48,6 @@ public:
 // Implementation
 protected:
 	HICON m_hIcon;
-
 	// Generated message map functions
 	//{{AFX_MSG(CMyDlg)
 	virtual BOOL OnInitDialog();
@@ -57,10 +64,13 @@ protected:
 	afx_msg void OnChangeSetDis2();
 	afx_msg void build(CString file);
 	afx_msg void OnOk4();
-	afx_msg void OnOk5();
 	afx_msg void OnButton2();
 	afx_msg void OnButton3();
 	afx_msg HCURSOR OnQueryDragIcon();
+	afx_msg void OnButton4();
+	afx_msg void OnHelp();
+	afx_msg void OnCancel2();
+	afx_msg void OnRandom();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

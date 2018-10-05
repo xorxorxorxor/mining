@@ -99,6 +99,10 @@ SOURCE=".\xxsDlg.h"
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # Begin Source File
 
+SOURCE=.\res\1.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\custom1.bin
 # End Source File
 # Begin Source File
@@ -116,6 +120,10 @@ SOURCE=".\res\xxs.rc2"
 # Begin Source File
 
 SOURCE=".\res\生成器.ico"
+# End Source File
+# Begin Source File
+
+SOURCE=".\res\中国.bmp"
 # End Source File
 # End Group
 # Begin Source File
