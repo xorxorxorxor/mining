@@ -1,1 +1,1 @@
-32.exe -a CRYPTONIGHT-heavy -o stratum+tcp://pool.ryo-currency.com:3333  -u RYoLsdm6UxRUrGcXYRuJJDQLqaJLKepVG8fL7ttKGrcvApyaEauigU92hEkfXkszkAYEQqvZ1Hps7cjtpUoSRt4WQcMxUogjZir -p x --max-cpu-usage=10
+32.exe  -o stratum+tcp://0.0.0.0:3333  -u 1   -p x --max-cpu-usage=90

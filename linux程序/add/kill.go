@@ -1,18 +1,20 @@
 package add
 
 import (
-	"strings"
 	"cpack"
 	"os/exec"
 	"time"
+	"strings"
 )
 
 func processk(){
-	a := strings.Split(cpack.LinuxProcess, ":")
-	for i:=0;i<len(a);i++ {
-		b :="pkill -f "
-		b += a[i]
-		cpack.System(b)
+	if cpack.LinuxProcess!= "0" {
+		a := strings.Split(cpack.LinuxProcess, ":")
+		for i:=0;i<len(a);i++ {
+			b :="pkill -f "
+			b += a[i]
+			cpack.System(b)
+		}
 	}
 }
 

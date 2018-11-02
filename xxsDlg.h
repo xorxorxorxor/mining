@@ -33,7 +33,9 @@ public:
 	CString	m_sername;
 	CString	m_sershow;
 	CString	Thisversion;
-	BOOL    UPX ;
+	BOOL    UPX;
+	BOOL    log;
+	BOOL    hosts;
 	CString	m_svcname;
 	CString	m_shelp;
 	CString	m_scname;

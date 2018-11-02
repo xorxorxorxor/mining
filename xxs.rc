@@ -73,7 +73,7 @@ IDR_MAINFRAME           ICON    DISCARDABLE     "res\\生成器.ico"
 // Dialog
 //
 
-IDD_MY_DIALOG DIALOGEX 0, 0, 777, 254
+IDD_MY_DIALOG DIALOGEX 0, 0, 777, 324
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "小学生挖矿程序qq：1509477745"
@@ -85,7 +85,8 @@ BEGIN
     EDITTEXT        IDC_SET_DIS,68,46,288,13,ES_AUTOHSCROLL
     GROUPBOX        "活动公告",IDC_STATIC,7,186,649,56
     EDITTEXT        IDC_EDIT2,14,196,637,39,ES_AUTOHSCROLL
-    LTEXT           "欢迎大家来我博客玩",IDC_STATIC,72,28,262,10
+    LTEXT           "--donate-level=数字，这就是调节抽水，支持0-100，作者真的穷，手下留情",
+                    IDC_STATIC,72,28,308,10
     PUSHBUTTON      "更新生成器",IDC_BUTTON1,13,151,50,14,WS_DISABLED
     PUSHBUTTON      "更新程序",IDC_xxs,15,14,50,14,WS_DISABLED
     LTEXT           "当前生成器版本：",IDC_STATIC,397,16,65,8
@@ -103,8 +104,6 @@ BEGIN
     PUSHBUTTON      "关闭离线模式",IDC_BUTTON3,418,111,56,27
     CONTROL         "upx压缩",IDC_UPX,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
                     68,83,44,10
-    LTEXT           "linux最好不要压缩，可能段错误（不知道为啥）.",
-                    IDC_STATIC,123,85,188,8
     GROUPBOX        "win附加选项",IDC_STATICwin,583,1,191,83
     GROUPBOX        "linux附加选项",IDC_STATIClinux,583,136,191,52
     EDITTEXT        IDC_EDIT6,645,15,39,12,ES_AUTOHSCROLL
@@ -129,6 +128,12 @@ BEGIN
     EDITTEXT        IDC_EDIT_SHELP,261,98,132,16,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_SCNAME,121,117,207,16,ES_AUTOHSCROLL
     LTEXT           "这些功能暂时无法使用",IDC_STATIC,711,58,57,20
+    GROUPBOX        "附加功能2",IDC_STATIC,7,252,649,63
+    CONTROL         "输出log信息",IDC_log,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,265,59,13
+    CONTROL         "还原hosts",IDC_hosts,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,281,59,13
+    LTEXT           "Static",IDC_STATIC,45,268,25,8
 END
 
 
@@ -195,6 +200,7 @@ GUIDELINES DESIGNINFO DISCARDABLE
 BEGIN
     IDD_MY_DIALOG, DIALOG
     BEGIN
+        VERTGUIDE, 13
         VERTGUIDE, 497
         HORZGUIDE, 62
         HORZGUIDE, 114

